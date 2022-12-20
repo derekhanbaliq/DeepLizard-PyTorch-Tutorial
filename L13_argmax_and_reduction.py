@@ -16,7 +16,7 @@ t = torch.tensor([
 print(t.max())
 print(t.argmax())
 print("---")
-print(t.max(dim=0))  # 把行压缩了看最大
+print(t.max(dim=0))  # squeeze row and find the max
 print(t.max(dim=1))
 print(t.argmax(dim=1))
 print("---")

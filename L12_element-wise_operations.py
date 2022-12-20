@@ -21,6 +21,8 @@ t = t1 + torch.tensor(
 )
 print(t)
 
+print('*'*50)
+
 t1 = torch.tensor([
     [1, 1],
     [1, 1]
@@ -28,10 +30,10 @@ t1 = torch.tensor([
 print(t1.shape)
 
 t2 = torch.tensor([2, 4], dtype=torch.float32)
-print(t2.shape)
+print("t2 =", t2.shape)
 
 t2 = np.broadcast_to(t2.numpy(), t1.shape)
-print(t2.shape)
+print("t2_new =", t2.shape)
 
 print(t1 + t2)
 
