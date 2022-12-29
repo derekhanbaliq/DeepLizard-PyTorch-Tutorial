@@ -7,7 +7,7 @@ import torch.utils.data
 train_set = torchvision.datasets.FashionMNIST(
     root='./data/FashionMNIST',  # location on disk
     train=True,  # 60000 for training & 10000 for testing
-    download=True,  # download if it's not present at the location we sepecified
+    download=True,  # download if it's not present at the location we specified
     transform=transforms.Compose([transforms.ToTensor()])  # A composition of transformations that should be
     # performed on the dataset elements.
 )
