@@ -9,6 +9,8 @@ import torchvision.transforms as transforms
 torch.set_printoptions(linewidth=120)  # display options for output
 torch.set_grad_enabled(True)  # already on by default
 
+from torch.utils.tensorboard import SummaryWriter
+
 print(torch.__version__)
 print(torchvision.__version__)
 
@@ -62,10 +64,16 @@ train_set = torchvision.datasets.FashionMNIST(
 )
 
 network = Network()
-
 # step 1: get batch from the training set
-train_loader = torch.utils.data.DataLoader(train_set, batch_size=100)
+train_loader = torch.utils.data.DataLoader(train_set, batch_size=100, shuffle=True)
 optimizer = optim.Adam(network.parameters(), lr=0.01)  # input the weights
+
+images, labels = next(iter(train_loader))
+grid = torchvision.utils.make_grid(images)
+
+tb = SummaryWriter()
+tb.add_image('images', grid)
+tb.add_graph(network, images)
 
 for epoch in range(5):  # step 7: do many epochs
 
@@ -85,7 +93,14 @@ for epoch in range(5):  # step 7: do many epochs
         total_loss += loss.item()
         total_correct += get_num_correct(preds, labels)
 
+    tb.add_scalar('Loss', total_loss, epoch)
+    tb.add_scalar('Number Correct', total_correct, epoch)
+    tb.add_scalar('Accuracy', total_correct / len(train_set), epoch)
+
+    tb.add_histogram('conv1.bias', network.conv1.bias, epoch)
+    tb.add_histogram('conv1.weight', network.conv1.weight, epoch)
+    tb.add_histogram('conv1.weight.grad', network.conv1.weight.grad, epoch)
+
     # step 6: do these for every batch in 1 epoch
     print("epoch = ", epoch, ", total_correct = ", total_correct, ", loss = ", total_loss)
-
 
